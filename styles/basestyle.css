@@ -1,0 +1,135 @@
+/*
+    Base stylesheet for all pages.
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100&family=Raleway:wght@300&display=swap');
+
+/*
+Colour scheme from Adobe Color Wheel
+body background:    #f7ebdb
+headers/footers:    #9ba59c   Primary colour
+nav:                #edd8bc
+accent:             #f5ceb3
+
+Colours chosen by me.
+*/
+
+html {
+    background-color: #f0f6ff;
+}
+
+body {
+    max-width: 1800px;
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+
+    background-color: #f0f6ff;
+
+    padding: 10px 10px 10px 10px;
+
+    font-family: "Raleway", sans-serif;
+}
+
+
+nav {
+    background-color: #e2ecf8;
+    box-shadow: 0 8px 10px rgba(0, 0, 0, .1);
+
+    font-family: "Raleway", sans-serif;
+
+    padding-top: 0px;
+    padding-bottom: 0px;
+
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    text-align: center;
+}
+
+nav > a {
+    display: inline-block;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    margin-left: 40px;
+    margin-right: 40px;
+
+    background-color: #bcd3ed;
+    color: black;
+    text-decoration: none;
+}
+
+img {
+    width: 100%;
+    max-width: 1800px;
+}
+
+table {
+    box-shadow: 0 8px 10px rgba(0, 0, 0, .1);
+    background-color: rgba(255, 255, 255, 0.466);
+    
+}
+
+th {
+    background-color: rgb(188, 200, 221);
+    text-decoration: bold;
+} 
+
+h3 {
+    font-size: 15px;
+}
+
+hr {
+    border: 10px #e2ecf8;
+}
+
+.button {
+    background-color: #e2ecf8;
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+  }
+
+/*
+Native <details> element styling
+AUTHOR: https://codepen.io/nicolasjengler 
+
+Code: https://codepen.io/HTMasterL/pen/XWjxKoK
+
++ replaced list-item styling with flex and pseudo-element content on summary => vertically aligned sign with summary content
++ added selection and focus outline matching detail style
++ addede custom list-style-type
+  - corona-warning  
+  - corona-info
+  - corona-alert
++ fix body height –> min-height: 
+  allow scroll on all details opened
+
+*/
+
+.card {
+    background: white;
+    padding: 38px 36px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    box-shadow: 0 8px 10px rgba(0, 0, 0, .1);
+    width: 95%;
+
+    display: flex;
+    
+    border-radius: 5px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, .05);
+    border-left: 15px solid gray;
+    padding:15px;
+    margin-top: 15px;
+}
+
+

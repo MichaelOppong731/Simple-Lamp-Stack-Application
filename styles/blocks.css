@@ -1,0 +1,100 @@
+/*
+    Stylesheet for the resume.html page.
+    Uses elements from https://www.w3schools.com/css/tryit.asp?filename=trycss_template2_grid
+*/
+
+main {
+    font-size: 17px;
+    background-color: hsla(0, 0%, 100%, 0.459);
+    box-shadow: 0 8px 10px rgba(0, 0, 0, .1);
+    max-width: 2000px;
+    width: 90%;
+
+    margin-left: 5%;
+    margin-right: 5%;
+
+    padding-top: 20px;
+    padding-left: 2px;
+    padding-right: 2px;
+    padding-bottom: 2px;
+    line-height: 1.4;
+    
+}
+
+main section {
+    float: left;
+}
+
+
+h1 {
+    padding-left: 10px;
+    font-weight: bold;
+    color: black;
+    font-size: 25px;
+}
+
+h2 {
+    padding-left: 2px;
+    font-weight: bold;
+    color: black;
+    font-size: 17px;
+}
+
+header {
+    box-shadow: 0 8px 10px rgba(0, 0, 0, .1);
+    max-width: 2000px;
+    width: 90%;
+    margin-bottom: 5px;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 50px;
+    
+    padding: 1px;
+    padding-left: 10px;
+
+    background-color: #e2ecf8;
+}
+
+
+.FlatParagraph {
+    max-width: 1200px;
+
+    width: 95%;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    margin-top: 1px;
+    margin-bottom: 20px;
+}
+
+
+
+main:after {
+    content: "";
+
+    clear: both;
+
+    display: block;
+}
+
+@media screen and (max-width: 800px) {
+    main {
+        font-size: 10px;
+        margin-top: 10px;
+    }
+    h1 {
+        font-size: 15px;
+    }
+    h2 {
+        font-size: 12px;
+    }
+    .SectionHeader {
+        margin-bottom: 5px;
+    }
+    .BlankBlock {
+        height: 20px;
+    }
+    .FlatParagraph {
+        margin-bottom: 5px;
+    }
+    
+}
