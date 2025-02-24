@@ -1,8 +1,8 @@
 <?php
-$dbhost = "lampstack-proxy.proxy-cbai0mmqgx0g.eu-west-1.rds.amazonaws.com";
-$dbuser= "root";
-$dbpass = "rootpassword";
-$dbname = "assign2db";
+$dbhost = getenv('DB_HOST'); 
+$dbuser = getenv('DB_USER'); 
+$dbpass = getenv('DB_PASSWORD');
+$dbname = getenv('DB_NAME');
 $connection = mysqli_connect($dbhost, $dbuser,$dbpass,$dbname);
 if (mysqli_connect_errno()) {
      die("database connection failed :" .
