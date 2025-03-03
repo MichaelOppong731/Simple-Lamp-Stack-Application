@@ -1,8 +1,8 @@
 <?php
-$dbhost = getenv('DB_HOST'); 
-$dbuser = getenv('DB_USER'); 
-$dbpass = getenv('DB_PASSWORD');
-$dbname = getenv('DB_NAME');
+dbhost = 'lampstack.c18g4q48md9n.eu-west-1.rds.amazonaws.com'; 
+dbuser = 'admin'; 
+dbpass = 'rootpassword';
+dbname = 'lampstack';
 $connection = mysqli_connect($dbhost, $dbuser,$dbpass,$dbname);
 if (mysqli_connect_errno()) {
      die("database connection failed :" .
