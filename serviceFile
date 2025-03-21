@@ -1,0 +1,21 @@
+[Unit]
+Description=ProjectX Container Service
+After=docker.service
+Requires=docker.service
+
+[Service]
+# Restart the container automatically if it stops.
+Restart=always
+ExecStartPre=-/usr/bin/docker rm -f projectx_container
+ExecStart=/usr/bin/docker run  \
+    --name projectx_container \
+    -p 80:80 \
+    --log-driver=awslogs \
+    --log-opt awslogs-region=eu-west-1 \
+    --log-opt awslogs-group=projectx-logs \
+    --log-opt awslogs-stream="{{.ID}}" \
+    michaelopp/projectx:latest
+ExecStop=/usr/bin/docker stop projectx_container
+
+[Install]
+WantedBy=multi-user.target
