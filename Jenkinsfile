@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    tools {
+        // This tells Jenkins to use the SonarQube Scanner tool configured with the name "SonarQubeScanner"
+        sonarQubeScanner 'SonarQubeScanner'
+    }
 
     environment {
         AWS_REGION = "us-east-1"  // Change to your AWS region
@@ -7,6 +11,7 @@ pipeline {
         IMAGE_TAG = "latest"
         SONARQUBE_SERVER = "sonarqube-server" // Set this to match SonarQube's configuration in Jenkins
         SONAR_PROJECT_KEY = "lampstack"
+        SONAR_AUTH_TOKEN = Credentials('test-token')
         
     }
 
