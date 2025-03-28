@@ -1,22 +1,11 @@
 <?php
 require __DIR__ . '/vendor/autoload.php'; // Load Composer dependencies
 
-use Dotenv\Dotenv;
-
-// Load .env file
-$dotenv = Dotenv::createImmutable(__DIR__);
-$dotenv->load();
-
-// Retrieve database credentials
-$dbhost = $_ENV['DB_HOST'] ?? getenv('DB_HOST');
-$dbuser = $_ENV['DB_USER'] ?? getenv('DB_USER');
-$dbpass = $_ENV['DB_PASS'] ?? getenv('DB_PASS');
-$dbname = $_ENV['DB_NAME'] ?? getenv('DB_NAME');
-
-// Ensure all required variables are set
-if (!$dbhost || !$dbuser || !$dbname) {
-    die("Error: Missing required database environment variables.");
-}
+// Retrieve database credentials from environment variables
+$dbhost = getenv('DB_HOST') ?: die("Error: Missing DB_HOST");
+$dbuser = getenv('DB_USER') ?: die("Error: Missing DB_USER");
+$dbpass = getenv('DB_PASS') ?: ''; // Password might be empty
+$dbname = getenv('DB_NAME') ?: die("Error: Missing DB_NAME");
 
 // Establish database connection
 $connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
