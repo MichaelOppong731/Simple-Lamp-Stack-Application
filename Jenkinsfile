@@ -9,7 +9,7 @@ pipeline {
         IMAGE_TAG = "latest"
         SONARQUBE_SERVER = "SonarQubeScanner" // Set this to match SonarQube's configuration in Jenkins
         SONAR_PROJECT_KEY = "lampstackSonar"
-        SONAR_AUTH_TOKEN = Credentials('test-token')
+        SONAR_AUTH_TOKEN = credentials('test-token')
         
     }
 
