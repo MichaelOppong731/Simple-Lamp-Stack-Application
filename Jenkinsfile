@@ -1,12 +1,10 @@
 pipeline {
     agent any
-    tools {
-        // This tells Jenkins to use the SonarQube Scanner tool configured with the name "SonarQubeScanner"
-        sonarRunner 'SonarQubeScanner'
-    }
+
 
     environment {
         AWS_REGION = "us-east-1"  // Change to your AWS region
+        SONAR_SCANNER_HOME = tool 'SonarQubeScanner'
         ECR_REPOSITORY = "your-ecr-repo-name"
         IMAGE_TAG = "latest"
         SONARQUBE_SERVER = "SonarQubeScanner" // Set this to match SonarQube's configuration in Jenkins
@@ -31,7 +29,7 @@ pipeline {
                 script {
                     withSonarQubeEnv(credentialsId: 'test-token') {
                         sh """
-                        sonar-scanner \
+                        ${SONAR_SCANNER_HOME}/bin/sonar-scanner \
                         -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
                         -Dsonar.sources=. \
                         -Dsonar.host.url=http://localhost:9000 \
