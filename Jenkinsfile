@@ -5,7 +5,7 @@ pipeline {
     environment {
         AWS_REGION = "us-east-1"  // Change to your AWS region
         SONAR_SCANNER_HOME = tool 'SonarQubeScanner'
-        ECR_REPOSITORY = "your-ecr-repo-name"
+        ECR_REPOSITORY = "lampstack/application"
         IMAGE_TAG = "latest"
         SONARQUBE_SERVER = "SonarQubeScanner" // Set this to match SonarQube's configuration in Jenkins
         SONAR_PROJECT_KEY = "lampstackSonar"
@@ -39,16 +39,18 @@ pipeline {
                 }
             }
         }
+    
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    echo "Building Docker image..."
+                    sh "docker build -t ${ECR_REPOSITORY}:${IMAGE_TAG} ."
+                    echo "Image built successfully..."
+                }
+            }
+        }
     }
 }
-//         stage('Build Docker Image') {
-//             steps {
-//                 script {
-//                     echo "Building Docker image..."
-//                     sh "docker build -t ${ECR_REPOSITORY}:${IMAGE_TAG} ."
-//                 }
-//             }
-//         }
 
 //         stage('Trivy Image Scan') {
 //             steps {
