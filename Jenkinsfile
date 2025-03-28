@@ -49,19 +49,20 @@ pipeline {
                 }
             }
         }
+    
+
+        stage('Trivy Image Scan') {
+            steps {
+                script {
+                    echo "Running Trivy security scan..."
+                    sh """
+                    trivy image --exit-code 1 --severity HIGH,CRITICAL ${ECR_REPOSITORY}:${IMAGE_TAG} || echo 'Security vulnerabilities detected'
+                    """
+                }
+            }
+        }
     }
 }
-
-//         stage('Trivy Image Scan') {
-//             steps {
-//                 script {
-//                     echo "Running Trivy security scan..."
-//                     sh """
-//                     trivy image --exit-code 1 --severity HIGH,CRITICAL ${ECR_REPOSITORY}:${IMAGE_TAG} || echo 'Security vulnerabilities detected'
-//                     """
-//                 }
-//             }
-//         }
 
 //         stage('Login to AWS ECR') {
 //             steps {
