@@ -7,6 +7,7 @@ pipeline {
         IMAGE_TAG = "latest"
         SONARQUBE_SERVER = "sonarqube-server" // Set this to match SonarQube's configuration in Jenkins
         SONAR_PROJECT_KEY = "lampstack"
+        
     }
 
     stages {
@@ -16,26 +17,27 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/MichaelOppong731/Simple-Lamp-Stack-Application.git'
             }
         }
-    }
-}
+
     
 
-//         stage('SonarQube Code Analysis') {
-//             steps {
-//                 script {
-//                     withSonarQubeEnv(credentialsId: 'test-token') {
-//                         sh """
-//                         sonar-scanner \
-//                         -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
-//                         -Dsonar.sources=. \
-//                         -Dsonar.host.url=http://your-sonarqube-server-url \
-//                         -Dsonar.login=\$SONAR_AUTH_TOKEN
-//                         """
-//                     }
-//                 }
-//             }
-//         }
-
+        stage('SonarQube Code Analysis') {
+            steps {
+                echo "Running SonarQube analysis..."
+                script {
+                    withSonarQubeEnv(credentialsId: 'test-token') {
+                        sh """
+                        sonar-scanner \
+                        -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
+                        -Dsonar.sources=. \
+                        -Dsonar.host.url=http://localhost:9000 \
+                        -Dsonar.token=\$SONAR_AUTH_TOKEN
+                        """
+                    }
+                }
+            }
+        }
+    }
+}
 //         stage('Build Docker Image') {
 //             steps {
 //                 script {
