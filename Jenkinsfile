@@ -9,8 +9,8 @@ pipeline {
         AWS_REGION = "us-east-1"  // Change to your AWS region
         ECR_REPOSITORY = "your-ecr-repo-name"
         IMAGE_TAG = "latest"
-        SONARQUBE_SERVER = "sonarqube-server" // Set this to match SonarQube's configuration in Jenkins
-        SONAR_PROJECT_KEY = "lampstack"
+        SONARQUBE_SERVER = "SonarQubeScanner" // Set this to match SonarQube's configuration in Jenkins
+        SONAR_PROJECT_KEY = "lampstackSonar"
         SONAR_AUTH_TOKEN = Credentials('test-token')
         
     }
