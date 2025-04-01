@@ -6,6 +6,7 @@ pipeline {
         AWS_REGION = "us-east-1"  // Change to your AWS region
         SONAR_SCANNER_HOME = tool 'SonarQubeScanner'
         ECR_REPOSITORY = "lampstack/application"
+        AWS_ACCOUNT_ID = "180294222815"
         IMAGE_TAG = "latest"
         SONARQUBE_SERVER = "SonarQubeScanner" // Set this to match SonarQube's configuration in Jenkins
         SONAR_PROJECT_KEY = "lampstackSonar"
@@ -61,26 +62,27 @@ pipeline {
                 }
             }
         }
+
+        stage('Login to AWS ECR') {
+            steps {
+                script {
+                    echo "Logging into AWS ECR..."
+                    sh """
+                    aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+                    echo "Login successful!"}
+                    """
+                }
+            }
+        }
     }
 }
-
-//         stage('Login to AWS ECR') {
-//             steps {
-//                 script {
-//                     echo "Logging into AWS ECR..."
-//                     sh """
-//                     aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin <AWS_ACCOUNT_ID>.dkr.ecr.${AWS_REGION}.amazonaws.com
-//                     """
-//                 }
-//             }
-//         }
 
 //         stage('Push Docker Image to ECR') {
 //             steps {
 //                 script {
 //                     echo "Pushing Docker image to AWS ECR..."
 //                     sh """
-//                     docker tag ${ECR_REPOSITORY}:${IMAGE_TAG} <AWS_ACCOUNT_ID>.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:${IMAGE_TAG}
+//                     docker tag ${ECR_REPOSITORY}:${IMAGE_TAG} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:${IMAGE_TAG}
 //                     docker push <AWS_ACCOUNT_ID>.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:${IMAGE_TAG}
 //                     """
 //                 }
