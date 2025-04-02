@@ -52,16 +52,16 @@ pipeline {
         }
     
 
-        // stage('Trivy Image Scan') {
-        //     steps {
-        //         script {
-        //             echo "Running Trivy security scan..."
-        //             sh """
-        //             trivy image --exit-code 1 --severity HIGH,CRITICAL ${ECR_REPOSITORY}:${IMAGE_TAG} || echo 'Security vulnerabilities detected'
-        //             """
-        //         }
-        //     }
-        // }
+        stage('Trivy Image Scan') {
+            steps {
+                script {
+                    echo "Running Trivy security scan..."
+                    sh """
+                    trivy image --exit-code 1 --severity HIGH,CRITICAL ${ECR_REPOSITORY}:${IMAGE_TAG} || echo 'Security vulnerabilities detected'
+                    """
+                }
+            }
+        }
 
         stage('Login to AWS ECR') {
             steps {
@@ -78,28 +78,26 @@ pipeline {
                 }
             }
         }
+
+        stage('Push Docker Image to ECR') {
+            steps {
+                script {
+                    echo "Pushing Docker image to AWS ECR..."
+                    sh """
+                    docker tag ${ECR_REPOSITORY}:${IMAGE_TAG} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:${IMAGE_TAG}
+                    docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:${IMAGE_TAG}
+                    """
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Pipeline completed successfully!"
+        }
+        failure {
+            echo "Pipeline failed!"
+        }
     }
 }
-
-//         stage('Push Docker Image to ECR') {
-//             steps {
-//                 script {
-//                     echo "Pushing Docker image to AWS ECR..."
-//                     sh """
-//                     docker tag ${ECR_REPOSITORY}:${IMAGE_TAG} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:${IMAGE_TAG}
-//                     docker push <AWS_ACCOUNT_ID>.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:${IMAGE_TAG}
-//                     """
-//                 }
-//             }
-//         }
-//     }
-
-//     post {
-//         success {
-//             echo "Pipeline completed successfully!"
-//         }
-//         failure {
-//             echo "Pipeline failed!"
-//         }
-//     }
-// }
