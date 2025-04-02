@@ -1,16 +1,19 @@
 <?php
-require __DIR__ . '/vendor/autoload.php'; // Load Composer dependencies
+require __DIR__ . '/vendor/autoload.php';
 
-// Retrieve database credentials from environment variables
-$dbhost = getenv('DB_HOST') ?: die("Error: Missing DB_HOST");
-$dbuser = getenv('DB_USER') ?: die("Error: Missing DB_USER");
-$dbpass = getenv('DB_PASS') ?: ''; // Password might be empty
-$dbname = getenv('DB_NAME') ?: die("Error: Missing DB_NAME");
+// Get the entire secret as JSON
+$secretJson = getenv('DB_SECRET') ?: die("Error: Missing DB_SECRET");
+$secret = json_decode($secretJson, true);
 
-// Establish database connection
+// Extract values
+$dbhost = $secret['DB_HOST'] ?? die("Error: Missing DB_HOST in secret");
+$dbuser = $secret['DB_USER'] ?? die("Error: Missing DB_USER in secret");
+$dbpass = $secret['DB_PASS'] ?? '';
+$dbname = $secret['DB_NAME'] ?? die("Error: Missing DB_NAME in secret");
+
+// Establish connection
 $connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 
-// Check connection
 if (!$connection) {
     die("Database connection failed: " . mysqli_connect_error());
 }
