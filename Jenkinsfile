@@ -11,6 +11,7 @@ pipeline {
         SONARQUBE_SERVER = "SonarQubeScanner" // Set this to match SonarQube's configuration in Jenkins
         SONAR_PROJECT_KEY = "lampstackSonar"
         SONAR_AUTH_TOKEN = credentials('test-token')
+        URL_REGISTRY = '180294222815.dkr.ecr.eu-west-1.amazonaws.com/lampstack/application:latest'
         
     }
 
@@ -84,8 +85,9 @@ pipeline {
                 script {
                     echo "Pushing Docker image to AWS ECR..."
                     sh """
-                    docker tag ${ECR_REPOSITORY}:${IMAGE_TAG} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:${IMAGE_TAG}
-                    docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:${IMAGE_TAG}
+                    docker tag ${ECR_REPOSITORY}:${IMAGE_TAG} ${URL_REGISTRY}
+                    docker push ${URL_REGISTRY}
+                    echo "Image pushed to ECR successfully!"
                     """
                 }
             }
