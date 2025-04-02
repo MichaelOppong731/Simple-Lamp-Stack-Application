@@ -64,7 +64,7 @@ pipeline {
             }
         }
 
-        stage('Login to AWS ECR') {
+        stage('Login to AWS ECR and Push Image') {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'AWS_LOGIN', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
@@ -74,24 +74,32 @@ pipeline {
                         aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
                         echo "Login successful!"}
                         """
+                        // Tag and push the Docker image
+                        echo "Tagging and pushing Docker image to ECR..."
+                        
+                        sh """
+                        docker tag ${ECR_REPOSITORY}:${IMAGE_TAG} ${URL_REGISTRY}
+                        docker push ${URL_REGISTRY}
+                        echo "Image pushed to ECR successfully!"
+                        """
                     }
                     
                 }
             }
         }
 
-        stage('Push Docker Image to ECR') {
-            steps {
-                script {
-                    echo "Pushing Docker image to AWS ECR..."
-                    sh """
-                    docker tag ${ECR_REPOSITORY}:${IMAGE_TAG} ${URL_REGISTRY}
-                    docker push ${URL_REGISTRY}
-                    echo "Image pushed to ECR successfully!"
-                    """
-                }
-            }
-        }
+        // stage('Push Docker Image to ECR') {
+        //     steps {
+        //         script {
+        //             echo "Pushing Docker image to AWS ECR..."
+        //             sh """
+        //             docker tag ${ECR_REPOSITORY}:${IMAGE_TAG} ${URL_REGISTRY}
+        //             docker push ${URL_REGISTRY}
+        //             echo "Image pushed to ECR successfully!"
+        //             """
+        //         }
+        //     }
+        // }
     }
 
     post {
