@@ -3,7 +3,7 @@ pipeline {
 
 
     environment {
-        AWS_REGION = "us-east-1"  // Change to your AWS region
+        AWS_REGION = "eu-west-1"  // Change to your AWS region
         SONAR_SCANNER_HOME = tool 'SonarQubeScanner'
         ECR_REPOSITORY = "lampstack/application"
         AWS_ACCOUNT_ID = "180294222815"
@@ -88,18 +88,7 @@ pipeline {
             }
         }
 
-        // stage('Push Docker Image to ECR') {
-        //     steps {
-        //         script {
-        //             echo "Pushing Docker image to AWS ECR..."
-        //             sh """
-        //             docker tag ${ECR_REPOSITORY}:${IMAGE_TAG} ${URL_REGISTRY}
-        //             docker push ${URL_REGISTRY}
-        //             echo "Image pushed to ECR successfully!"
-        //             """
-        //         }
-        //     }
-        // }
+       
     }
 
     post {
