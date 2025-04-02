@@ -4,8 +4,8 @@ FROM php:8.1-cli-alpine AS builder
 # Set working directory inside the container
 WORKDIR /app
 
-# Install system dependencies needed for Composer
-RUN apt-get update && apt-get install -y --no-install-recommends zip unzip
+# Install system dependencies needed for Composer (Alpine uses apk)
+RUN apk add --no-cache zip unzip
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -30,8 +30,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Create a non-root user for security
-RUN useradd -m -s /bin/bash appuser && chown -R appuser:www-data /var/www/html
+# Configure Apache for non-root operation (port 8080)
+RUN sed -i 's/Listen 80/Listen 8080/' /etc/apache2/ports.conf && \
+    sed -i 's/:80/:8080/g' /etc/apache2/sites-available/*.conf
+
+# Create a non-root user and set permissions
+RUN useradd -m -s /bin/bash appuser && \
+    chown -R appuser:www-data /var/www/html /var/log/apache2 /var/run/apache2
 
 # Copy application files from the build stage
 COPY --chown=appuser:www-data . .
@@ -39,17 +44,11 @@ COPY --chown=appuser:www-data . .
 # Copy vendor dependencies from the build stage
 COPY --from=builder --chown=appuser:www-data /app/vendor ./vendor
 
-# Remove any existing .env file (we are using ECS environment variables)
-RUN rm -f /var/www/html/.env
+# Remove any existing .env file (ECS will inject env vars)
+RUN rm -f .env
 
-# Expose port 80 for non-root operations
-# This is the default port for Apache, but we will change it to 8080
-# to avoid conflicts with other services
-RUN sed -i 's/Listen 80/Listen 8080/' /etc/apache2/ports.conf && \
-    sed -i 's/:80/:8080/g' /etc/apache2/sites-available/000-default.conf
+# Expose port 8080 (mapped to host port 80 in ECS)
 EXPOSE 8080
-
-
 
 # Set user to appuser for security
 USER appuser
