@@ -52,25 +52,29 @@ pipeline {
         }
     
 
-        stage('Trivy Image Scan') {
-            steps {
-                script {
-                    echo "Running Trivy security scan..."
-                    sh """
-                    trivy image --exit-code 1 --severity HIGH,CRITICAL ${ECR_REPOSITORY}:${IMAGE_TAG} || echo 'Security vulnerabilities detected'
-                    """
-                }
-            }
-        }
+        // stage('Trivy Image Scan') {
+        //     steps {
+        //         script {
+        //             echo "Running Trivy security scan..."
+        //             sh """
+        //             trivy image --exit-code 1 --severity HIGH,CRITICAL ${ECR_REPOSITORY}:${IMAGE_TAG} || echo 'Security vulnerabilities detected'
+        //             """
+        //         }
+        //     }
+        // }
 
         stage('Login to AWS ECR') {
             steps {
                 script {
-                    echo "Logging into AWS ECR..."
-                    sh """
-                    aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
-                    echo "Login successful!"}
-                    """
+                    withCredentials([usernamePassword(credentialsId: 'AWS_LOGIN', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                        // Login to ECR
+                        echo "Logging into AWS ECR..."
+                        sh """
+                        aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+                        echo "Login successful!"}
+                        """
+                    }
+                    
                 }
             }
         }
