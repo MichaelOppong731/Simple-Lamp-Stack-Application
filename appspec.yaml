@@ -1,0 +1,9 @@
+version: 0.0
+Resources:
+  - TargetService:
+      Type: AWS::ECS::Service
+      Properties:
+        TaskDefinition: "arn:aws:ecs:eu-west-1:180294222815:task-definition/LampStack-app:1"
+        LoadBalancerInfo:
+          ContainerName: "LampstackApplication"
+          ContainerPort: 80

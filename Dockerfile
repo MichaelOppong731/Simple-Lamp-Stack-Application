@@ -1,5 +1,5 @@
 # _____Stage 1: Build dependencies______ 
-FROM php:8.1-cli AS builder
+FROM php:8.1-cli-alpine AS builder
 
 # Set working directory inside the container
 WORKDIR /app
@@ -42,8 +42,14 @@ COPY --from=builder --chown=appuser:www-data /app/vendor ./vendor
 # Remove any existing .env file (we are using ECS environment variables)
 RUN rm -f /var/www/html/.env
 
-# Expose port 80
-EXPOSE 80
+# Expose port 80 for non-root operations
+# This is the default port for Apache, but we will change it to 8080
+# to avoid conflicts with other services
+RUN sed -i 's/Listen 80/Listen 8080/' /etc/apache2/ports.conf && \
+    sed -i 's/:80/:8080/g' /etc/apache2/sites-available/000-default.conf
+EXPOSE 8080
+
+
 
 # Set user to appuser for security
 USER appuser
